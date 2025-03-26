@@ -9,7 +9,7 @@ body {
 
 .calculator {
   width: 320px;
-  background: red; /* #1d1d1f; */
+  background: #313131;
   padding: 20px;
   border-radius: 28px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
