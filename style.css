@@ -67,7 +67,6 @@ body {
 }
 
 .calculator__key--zero {
-  width: 160px;
   border-radius: 50px;
   text-align: left;
   padding-left: 30px;
