@@ -1,28 +1,29 @@
-const display = document.querySelector("#display");
-display.value = "0";
+const expression = document.querySelector("#display");
+expression.value = "0";
 const keyboard = document.querySelector("#calculatorkeyboard");
 keyboard.addEventListener("click", (e) => {
     const target = e.target;
-    checkExpression(target);
-});
-function checkExpression(target) {
     if (target instanceof HTMLElement && target.tagName !== "TABLE") {
         const character = target.innerText;
-        const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
         if (character === "AC") {
-            display.value = "0";
+            expression.value = "0";
         }
         else if (character === "=") {
-            display.value = calculate(display.value);
+            expression.value = calculate(expression.value);
         }
-        else if (numbers.includes(character) && display.value === "0") {
-            display.value = character;
+        else if (numbers.includes(character) && expression.value === "0") {
+            expression.value = character;
         }
         else {
-            display.value += character;
+            expression.value += character;
         }
     }
-}
+    if (/([+\-*/])0(\d)/.test(expression.value)) {
+        console.log("expression à nettoyer");
+        // expression.value.replace(/([+\-*/])0+(\d)/g, "$1$2");
+    }
+});
 function calculate(expression) {
     try {
         const postfix = convertExpressionToPostfix(expression);

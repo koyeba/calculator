@@ -1,29 +1,25 @@
-const display = document.querySelector("#display") as HTMLInputElement | null;
-display.value = "0";
-const keyboard = document.querySelector(
-  "#calculatorkeyboard"
-) as HTMLElement | null;
+const expression: HTMLInputElement | null = document.querySelector("#display");
+expression.value = "0";
+
+const keyboard: HTMLElement | null = document.querySelector("#keyboard");
 
 keyboard.addEventListener("click", (e: MouseEvent) => {
   const target: EventTarget = e.target;
-  checkExpression(target);
-});
 
-function checkExpression(target: EventTarget) {
   if (target instanceof HTMLElement && target.tagName !== "TABLE") {
     const character = target.innerText;
-    const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
     if (character === "AC") {
-      display.value = "0";
+      expression.value = "0";
     } else if (character === "=") {
-      display.value = calculate(display.value);
-    } else if (numbers.includes(character) && display.value === "0") {
-      display.value = character;
+      expression.value = calculate(expression.value);
+    } else if (numbers.includes(character) && expression.value === "0") {
+      expression.value = character;
     } else {
-      display.value += character;
+      expression.value += character;
     }
   }
-}
+});
 
 function calculate(expression: string) {
   try {
