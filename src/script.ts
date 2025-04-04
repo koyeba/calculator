@@ -1,7 +1,9 @@
 const expression: HTMLInputElement | null = document.querySelector("#display");
 expression.value = "0";
 
-const keyboard: HTMLElement | null = document.querySelector("#keyboard");
+const keyboard = document.querySelector(
+  "#calculatorkeyboard"
+) as HTMLElement | null;
 
 keyboard.addEventListener("click", (e: MouseEvent) => {
   const target: EventTarget = e.target;
