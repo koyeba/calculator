@@ -1,37 +1,45 @@
 const display = document.querySelector("#display");
+display.value = "0";
 const keyboard = document.querySelector("#calculatorkeyboard");
 keyboard.addEventListener("click", (e) => {
     const target = e.target;
+    checkExpression(target);
+});
+function checkExpression(target) {
     if (target instanceof HTMLElement && target.tagName !== "TABLE") {
-        if (target.innerText === "AC") {
+        const character = target.innerText;
+        const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        if (character === "AC") {
             display.value = "0";
         }
-        else if (target.innerText === "=") {
+        else if (character === "=") {
             display.value = calculate(display.value);
         }
+        else if (numbers.includes(character) && display.value === "0") {
+            display.value = character;
+        }
         else {
-            display.value += target.innerText;
+            display.value += character;
         }
     }
-});
+}
 function calculate(expression) {
     try {
-        const postfix = expressionToPostfix(expression);
+        const postfix = convertExpressionToPostfix(expression);
         return calculatePostfix(postfix);
     }
     catch (error) {
         return "Erreur";
     }
 }
-// Convertit l'expression infixe (ex: "3 + 5 * 2") en notation postfixée (ex: "3 5 2 * +")
-function expressionToPostfix(expression) {
+function convertExpressionToPostfix(expression) {
     const precedence = { "+": 1, "-": 1, "*": 2, "/": 2 };
     const output = [];
     const operators = [];
     const tokens = expression.match(/\d+(\.\d+)?|[\+\-\*\/\(\)]/g); // Tokenisation
     tokens.forEach((token) => {
         if (!isNaN(token)) {
-            output.push(token); // Si c'est un nombre, l'ajouter directement
+            output.push(token); // Si nombre => l'ajouter directement
         }
         else if (token === "(") {
             operators.push(token);
@@ -40,7 +48,7 @@ function expressionToPostfix(expression) {
             while (operators.length && operators[operators.length - 1] !== "(") {
                 output.push(operators.pop());
             }
-            operators.pop(); // Retirer la parenthèse ouvrante
+            operators.pop(); // Retire la parenthèse ouvrante
         }
         else {
             while (operators.length &&
@@ -55,8 +63,6 @@ function expressionToPostfix(expression) {
     }
     return output;
 }
-// Évalue la notation postfixée
-// Fait le calcul en tenant compte des priorités
 function calculatePostfix(postfix) {
     const stack = [];
     postfix.forEach((token) => {
@@ -86,18 +92,15 @@ function calculatePostfix(postfix) {
     });
     return stack.pop();
 }
-/* Ajout dynamique des touches */
-function addCalculatorKey(rowOfKeys, // Revoir le nom des variables
-textOnKey, personnalizedClass, numberOfColspan) {
+function addCalculatorKey(rowOfKeys, textOnKey, personnalizedClass, numberOfColspan) {
     const rowSelected = document.querySelector(`${rowOfKeys}`);
     const newKey = document.createElement("td");
     newKey.innerText = textOnKey;
-    // Améliorer la fonction pour ne pas avoir de class en double
+    // Améliorer fonction pour ne pas avoir les classes en double
     newKey.classList.add("calculator__key", personnalizedClass);
     newKey.setAttribute("colspan", `${numberOfColspan}`);
     rowSelected.append(newKey);
 }
-// Améliorer le code pour ne pas avoir tout ses appels de fonctions, tableau ?
 addCalculatorKey("#firstRowOfKeys", "AC", "calculator__key--ac", 3);
 addCalculatorKey("#firstRowOfKeys", "/", "calculator__key--operator", 1);
 addCalculatorKey("#secondRowOfKeys", "7", "calculator__key", 1);
