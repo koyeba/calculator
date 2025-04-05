@@ -1,9 +1,7 @@
 const expression: HTMLInputElement | null = document.querySelector("#display");
 expression.value = "0";
 
-const keyboard = document.querySelector(
-  "#calculatorkeyboard"
-) as HTMLElement | null;
+const keyboard = document.querySelector("#keyboard") as HTMLElement | null;
 
 keyboard.addEventListener("click", (e: MouseEvent) => {
   const target: EventTarget = e.target;
@@ -11,6 +9,7 @@ keyboard.addEventListener("click", (e: MouseEvent) => {
   if (target instanceof HTMLElement && target.tagName !== "TABLE") {
     const character = target.innerText;
     const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
     if (character === "AC") {
       expression.value = "0";
     } else if (character === "=") {
@@ -20,6 +19,10 @@ keyboard.addEventListener("click", (e: MouseEvent) => {
     } else {
       expression.value += character;
     }
+  }
+
+  if (/([+\-*/])0(\d)/.test(expression.value)) {
+    expression.value = expression.value.replace(/([+\-*/])0+(\d)/g, "$1$2");
   }
 });
 

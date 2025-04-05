@@ -1,6 +1,6 @@
 const expression = document.querySelector("#display");
 expression.value = "0";
-const keyboard = document.querySelector("#calculatorkeyboard");
+const keyboard = document.querySelector("#keyboard");
 keyboard.addEventListener("click", (e) => {
     const target = e.target;
     if (target instanceof HTMLElement && target.tagName !== "TABLE") {
@@ -20,8 +20,7 @@ keyboard.addEventListener("click", (e) => {
         }
     }
     if (/([+\-*/])0(\d)/.test(expression.value)) {
-        console.log("expression à nettoyer");
-        // expression.value.replace(/([+\-*/])0+(\d)/g, "$1$2");
+        expression.value = expression.value.replace(/([+\-*/])0+(\d)/g, "$1$2");
     }
 });
 function calculate(expression) {
